@@ -47,35 +47,15 @@ def pad(bs):
 if __name__=="__main__":
 
     if len(sys.argv) != 2:
-        print "Usage: %s <name of file containing raw byte shellcode>" % (sys.argv[0])
+        print "Usage: %s <desired hex value e.g. 0x1234>" % (sys.argv[0])
         exit(-1)
     else:
-        bs = open(sys.argv[1], 'rb').read()
-
-    bs = pad(bs)
-    #reverse our shellcode (stack grows downwards, so later pushes should be the
-    #the front part of our shellcode)
-    bs = bs[::-1]
-
-    #our alphanumeric chain
-    chain = ""
-
-    for i in range(0, len(bs), 4):
-        #zero out whatever is in EAX
-        chain += ZERO_EAX
-
-        val = 0
-        target_bytes = bs[i: i+4]
-        for j, by in enumerate(target_bytes):
-            val += ord(by) << (8 * (3-j))
-
-        print("[*] Now encoding %s..." % (hex(val)))
-
+        chain = ""
         a = BitVec('a', 32)
         b = BitVec('b', 32)
         c = BitVec('c', 32)
         d = BitVec('d', 32)
-        target = BitVecVal(val, 32)
+        target = BitVecVal(int(sys.argv[1], 16), 32)
 
         s = Solver()
         add_subvector_conds(s, a)
