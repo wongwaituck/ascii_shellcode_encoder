@@ -13,7 +13,7 @@ NOP = "\x90"
 Returns alphanumeric constraints based on b on solver s
 '''
 def add_constraint_byte(s, b):
-    b_number = And(UGE(b, 0x30) , ULE(b, 0x7A))
+    b_number = And(UGE(b, 0x30) , ULE(b, 0x39))
     b_uppercase = And(UGE(b, 0x41), ULE(b, 0x5A))
     b_lowercase = And(UGE(b, 0x61), ULE(b, 0x7A))
 
